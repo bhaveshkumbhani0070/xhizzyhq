@@ -18,12 +18,15 @@
   "homepage": "https://github.com/kumbhanialex111/xhizzyhq#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "discord.js": "^11.3.0",
     "express": "^4.16.2",
     "fb": "^2.0.0",
+    "github": "^13.1.0",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
+    "telegrambot": "^0.1.0",
     "twitter": "^1.7.1"
   }
 }
