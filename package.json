@@ -24,6 +24,7 @@
     "github": "^13.1.0",
     "method-override": "^2.3.10",
     "morgan": "^1.9.0",
+    "octonode": "^0.9.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "telegrambot": "^0.1.0",

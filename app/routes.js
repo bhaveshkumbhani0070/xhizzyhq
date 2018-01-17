@@ -7,4 +7,5 @@ var telegram = require('../api/telegram.js');
 module.exports = function(app) {
     app.get('/api/facebookLikes/:pagename', facebook.facebookLikes);
     app.get('/api/twitter/:accountName', twitter.accountName)
+    app.get('/api/github', github.gitcommit);
 }

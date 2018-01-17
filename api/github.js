@@ -20,3 +20,19 @@ exports.discord = function(req, res) {
 
     // console.log(message.mentions.members.first())
 }
+exports.gitcommit = function(req, res) {
+    var github = require('octonode');
+    var client = github.client();
+    var ghrepo = client.repo('kumbhanialex111/xhizzyhq');
+    ghrepo.commits(function(err, data) {
+        if (!err) {
+            var totalCommit = data.length;
+            console.log('totalCommit', totalCommit);
+            for (var i = 0; i < data.length; i++) {
+                // console.log('data', data[i]);
+            }
+        } else {
+            console.log('Error', err);
+        }
+    });
+}
