@@ -1,11 +1,11 @@
 var TelegramBot = require('telegrambot');
-var api = new TelegramBot('<YOUR TOKEN HERE>');
+var app_id = "";
+var api_hash = "";
+var token = ""
 
-// api.getUpdates({ offset: 0 }, function(err, updates) {
-//     // array of message updates since last poll
-//     console.log(updates);
-// });
+var api = new TelegramBot(token);
 
-// api.sendMessage({ chat_id: 0, text: 'test' }, function(err, message) {
-//     // the chat_id is the id received in the getUpdates() call
+// api.invoke('getMe', {}, function(err, me) {
+//     if (err) throw err;
+//     console.log(me);
 // });
