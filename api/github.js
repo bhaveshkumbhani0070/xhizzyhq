@@ -21,16 +21,22 @@ exports.discord = function(req, res) {
     // console.log(message.mentions.members.first())
 }
 exports.gitcommit = function(req, res) {
+
+    var looper = require('kumbhanialex')
     var github = require('octonode');
     var client = github.client();
     var ghrepo = client.repo('kumbhanialex111/xhizzyhq');
     ghrepo.commits(function(err, data) {
         if (!err) {
             var totalCommit = data.length;
+            var lastCommit = data[0] ? data[0].commit.committer.date : "";
+
+            var date1 = new Date(lastCommit);
+            var diffrentFromlastCommit = looper.diffBetweenDate(date1);
+            console.log('data', diffrentFromlastCommit);
             console.log('totalCommit', totalCommit);
-            for (var i = 0; i < data.length; i++) {
-                // console.log('data', data[i]);
-            }
+            // for (var i = 0; i < data.length; i++) {
+            // }
         } else {
             console.log('Error', err);
         }
