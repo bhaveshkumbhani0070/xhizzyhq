@@ -18,6 +18,7 @@
   "homepage": "https://github.com/kumbhanialex111/xhizzyhq#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
+    "cheerio": "^1.0.0-rc.2",
     "discord.js": "^11.3.0",
     "express": "^4.16.2",
     "fb": "^2.0.0",
@@ -27,6 +28,7 @@
     "morgan": "^1.9.0",
     "nraw": "^0.2.5",
     "octonode": "^0.9.1",
+    "q": "^1.5.1",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "telegrambot": "^0.1.0",
