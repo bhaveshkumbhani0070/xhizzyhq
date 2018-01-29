@@ -6,6 +6,9 @@ var discord = require('../api/discord.js');
 var reddit = require('../api/reddit.js');
 
 module.exports = function(app) {
+    app.get('/', function(req, res) {
+        res.sendFile('index.html', { 'root': "view" });
+    });
     app.get('/api/facebookLikes/:pagename', facebook.facebookLikes);
     app.get('/api/twitter/:accountName', twitter.accountName)
     app.get('/api/github', github.gitcommit);
