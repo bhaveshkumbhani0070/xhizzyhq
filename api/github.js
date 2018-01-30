@@ -30,7 +30,6 @@ cron.schedule('0 */1 * * * *', function() {
     start()
 });
 
-// start()
 
 function start() {
     connection.query('select * from coins', function(err, data) {
@@ -117,6 +116,9 @@ function twitterUpdate(id, redUrl) {
     });
 }
 
+// facebookUpdate(1, "https://www.facebook.com/aelfio/");
+
+function facebookUpdate(id, link) {}
 
 function getCommitUpdate(id, repo) {
     var ghrepo = client.repo(repo);
