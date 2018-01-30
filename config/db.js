@@ -1,12 +1,18 @@
 var mysql = require('mysql');
 
+var host = process.env.host;
+var user = process.env.user;
+var password = process.env.password;
+var database = process.env.database;
+
 var connection = mysql.createConnection({
-    host: process.env.host, // ,
-    user: process.env.user, //,
-    password: process.env.password, //,
-    database: process.env.database, //
+    host: host,
+    user: user,
+    password: password,
+    database: database,
 });
 
+console.log('******', host, ' ', user, ' ', password, ' ', database);
 connection.connect(function(err, connection) {
     if (err) {
         console.log('err', err);
