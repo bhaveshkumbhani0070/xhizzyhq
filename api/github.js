@@ -27,8 +27,10 @@ exports.gitcommit = function(req, res) {
 }
 
 cron.schedule('0 */1 * * * *', function() {
-    start()
+    // start()
 });
+
+// start()
 
 function start() {
     connection.query('select * from coins', function(err, data) {
@@ -50,15 +52,17 @@ function start() {
                     connection.query('select * from coin_history where coin_id=' + id, function(err, coinData) {
                         if (!err) {
                             console.log('coinData', coinData);
-
-                            if (coinData && coinData.length > 0) {
-                                if (coinData[0].github_totalCommits) {
-                                    console.log('Alredy count');
-                                } else {
-                                    getCommitUpdate(id, repo);
-                                }
+                            if (coinData.length > 0) {
+                                getCommitUpdate(id, repo);
+                                redditUpdate(id, reddit);
                             } else {
-                                getCommitAdd(id, repo);
+                                connection.query("insert into coin_history(coin_id,date_time) values(" + id + ",'" + looper.dateFormat(new Date()) + "')", function(err, added) {
+                                    if (!err) {
+                                        getCommitUpdate(id, repo);
+                                    } else {
+                                        console.log('Error for adding new history', err)
+                                    }
+                                })
                             }
                         } else {
                             console.log('Error', err);
@@ -74,44 +78,23 @@ function start() {
     })
 }
 
-function getUrlsUpdate(id, redUrl) {
+function redditUpdate(id, redUrl) {
     var getLinks = request(redUrl, function(err, res, body) { //async request
         if (!err && res.statusCode == 200) {
             var $ = cheerio.load(body);
-            console.log('find', $('.subscribers .number').text());
-        }
-    });
-}
-
-
-function getCommitAdd(id, repo) {
-    var ghrepo = client.repo(repo);
-    ghrepo.commits(function(err, data) {
-        if (!err) {
-            var totalCommit = data.length;
-            var lastCommit = data[0] ? data[0].commit.committer.date : "";
-            var date1 = new Date();
-            var date2 = new Date(lastCommit);
-            console.log('totalCommit', totalCommit);
-
-            var allData = {
-                coin_id: id,
-                date_time: new Date(),
-                github_totalCommits: totalCommit
-            }
-            connection.query("insert into coin_history(coin_id,date_time,github_totalCommits) values (" + id + ",'" + looper.dateFormat(new Date()) + "'," + totalCommit + ")", function(err, insData) {
+            var followes = $('.subscribers .number').text();
+            connection.query('update coin_history set reddit_followers=' + followes + ' where coin_id=' + id, function(err, insData) {
                 if (!err) {
-                    console.log('Added');
+                    console.log('Update reddit');
                 } else {
                     console.log('Error', err);
                 }
             })
-
-        } else {
-            console.log('Error', err);
         }
     });
 }
+
+
 
 function getCommitUpdate(id, repo) {
     var ghrepo = client.repo(repo);
@@ -135,3 +118,34 @@ function getCommitUpdate(id, repo) {
         }
     });
 }
+
+
+
+// function getCommitAdd(id, repo) {
+//     var ghrepo = client.repo(repo);
+//     ghrepo.commits(function(err, data) {
+//         if (!err) {
+//             var totalCommit = data.length;
+//             var lastCommit = data[0] ? data[0].commit.committer.date : "";
+//             var date1 = new Date();
+//             var date2 = new Date(lastCommit);
+//             console.log('totalCommit', totalCommit);
+
+//             var allData = {
+//                 coin_id: id,
+//                 date_time: new Date(),
+//                 github_totalCommits: totalCommit
+//             }
+//             connection.query("insert into coin_history(coin_id,date_time,github_totalCommits) values (" + id + ",'" + looper.dateFormat(new Date()) + "'," + totalCommit + ")", function(err, insData) {
+//                 if (!err) {
+//                     console.log('Added');
+//                 } else {
+//                     console.log('Error', err);
+//                 }
+//             })
+
+//         } else {
+//             console.log('Error', err);
+//         }
+//     });
+// }
