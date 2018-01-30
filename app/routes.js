@@ -14,4 +14,5 @@ module.exports = function(app) {
     app.get('/api/github', github.gitcommit);
     app.get('/api/discord', discord.discord);
     app.get('/api/reddit', reddit.reddit);
+    app.get('/api/getallData', github.getallData);
 }

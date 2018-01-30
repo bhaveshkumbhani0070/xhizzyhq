@@ -173,3 +173,8 @@ function getCommitUpdate(id, repo) {
 //         }
 //     });
 // }
+
+
+exports.getallData = function(req, res) {
+
+}
