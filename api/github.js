@@ -55,10 +55,14 @@ function start() {
                             if (coinData.length > 0) {
                                 getCommitUpdate(id, repo);
                                 redditUpdate(id, reddit);
+                                twitterUpdate(1, twitterLink);
+
                             } else {
                                 connection.query("insert into coin_history(coin_id,date_time) values(" + id + ",'" + looper.dateFormat(new Date()) + "')", function(err, added) {
                                     if (!err) {
                                         getCommitUpdate(id, repo);
+                                        redditUpdate(id, reddit);
+                                        twitterUpdate(1, twitterLink);
                                     } else {
                                         console.log('Error for adding new history', err)
                                     }
@@ -94,6 +98,24 @@ function redditUpdate(id, redUrl) {
     });
 }
 
+
+function twitterUpdate(id, redUrl) {
+    var getLinks = request(redUrl, function(err, res, body) { //async request
+        if (!err && res.statusCode == 200) {
+            var $ = cheerio.load(body);
+            var followes = $('.ProfileNav-item--followers a').attr('title');
+            followes = parseInt(followes.replace(',', ''));
+
+            connection.query('update coin_history set twitter_followers=' + followes + ' where coin_id=' + id, function(err, insData) {
+                if (!err) {
+                    console.log('Update twitter');
+                } else {
+                    console.log('Error', err);
+                }
+            })
+        }
+    });
+}
 
 
 function getCommitUpdate(id, repo) {
