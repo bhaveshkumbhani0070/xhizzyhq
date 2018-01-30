@@ -45,21 +45,21 @@ function start() {
                     var telegram = data[i].telegram;
                     var reddit = data[i].reddit;
 
-                    githubLink = githubLink.split('/');
-                    var repo = githubLink[githubLink.length - 2] + '/' + githubLink[githubLink.length - 1]
+                    // githubLink = githubLink.split('/');
+                    // var repo = githubLink[githubLink.length - 2] + '/' + githubLink[githubLink.length - 1]
 
                     connection.query('select * from coin_history where coin_id=' + id, function(err, coinData) {
                         if (!err) {
                             console.log('coinData', coinData);
                             if (coinData.length > 0) {
-                                getCommitUpdate(id, repo);
+                                getCommitUpdate(id, githubLink);
                                 redditUpdate(id, reddit);
                                 twitterUpdate(1, twitterLink);
 
                             } else {
                                 connection.query("insert into coin_history(coin_id,date_time) values(" + id + ",'" + looper.dateFormat(new Date()) + "')", function(err, added) {
                                     if (!err) {
-                                        getCommitUpdate(id, repo);
+                                        getCommitUpdate(id, githubLink);
                                         redditUpdate(id, reddit);
                                         twitterUpdate(1, twitterLink);
                                     } else {
@@ -97,6 +97,12 @@ function redditUpdate(id, redUrl) {
     });
 }
 
+// gitUpdate(1, 'https://github.com/AElfProject/AElf');
+
+// function gitUpdate(id, redUrl) {
+
+// }
+
 
 function twitterUpdate(id, redUrl) {
     var getLinks = request(redUrl, function(err, res, body) { //async request
@@ -121,26 +127,35 @@ function twitterUpdate(id, redUrl) {
 function facebookUpdate(id, link) {}
 
 function getCommitUpdate(id, repo) {
-    var ghrepo = client.repo(repo);
-    ghrepo.commits(function(err, data) {
-        if (!err) {
-            var totalCommit = data.length;
-            var lastCommit = data[0] ? data[0].commit.committer.date : "";
-            var date1 = new Date();
-            var date2 = new Date(lastCommit);
-            console.log('totalCommit', totalCommit);
-
-            connection.query('update coin_history set github_totalCommits=' + totalCommit + ' where coin_id=' + id, function(err, insData) {
+    var getLinks = request(repo, function(err, res, body) { //async request
+        if (!err && res.statusCode == 200) {
+            var $ = cheerio.load(body);
+            var commi = $('.numbers-summary .commits a .text-emphasized').text().trim();
+            commi = parseInt(commi);
+            console.log('total commit', commi)
+            connection.query('update coin_history set github_totalCommits=' + commi + ' where coin_id=' + id, function(err, insData) {
                 if (!err) {
-                    console.log('Update');
+                    console.log('Update github');
                 } else {
                     console.log('Error', err);
                 }
             })
-        } else {
-            console.log('Error', err);
+
         }
     });
+    // var ghrepo = client.repo(repo);
+    // ghrepo.commits(function(err, data) {
+    //     if (!err) {
+    //         var totalCommit = data.length;
+    //         var lastCommit = data[0] ? data[0].commit.committer.date : "";
+    //         var date1 = new Date();
+    //         var date2 = new Date(lastCommit);
+    //         console.log('totalCommit', totalCommit);
+
+    //     } else {
+    //         console.log('Error', err);
+    //     }
+    // });
 }
 
 
