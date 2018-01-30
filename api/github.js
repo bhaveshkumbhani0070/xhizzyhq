@@ -29,10 +29,15 @@ cron.schedule('0 */1 * * * *', function() {
             if (data.length > 0) {
                 console.log('data', data);
                 for (var i = 0; i < data.length; i++) {
-                    var user = data[i].user;
-                    var repo = data[i].repo;
-                    var re = user + '/' + repo;
-                    getCommit(re);
+                    if (data[i].lastcommit == null) {
+                        var user = data[i].user;
+                        var repo = data[i].repo;
+                        var re = user + '/' + repo;
+                        getCommit(data[i].id, re);
+                    } else {
+                        console.log('There is alredy lastcommit');
+                    }
+
                 }
             } else {
 
@@ -44,7 +49,7 @@ cron.schedule('0 */1 * * * *', function() {
     })
 });
 
-function getCommit(repo) {
+function getCommit(id, repo) {
     var ghrepo = client.repo(repo);
     ghrepo.commits(function(err, data) {
         if (!err) {
@@ -55,8 +60,13 @@ function getCommit(repo) {
             var diffrentFromlastCommit = looper.diffBetweenDate(date1);
             console.log('data', diffrentFromlastCommit);
             console.log('totalCommit', totalCommit);
-            // for (var i = 0; i < data.length; i++) {
-            // }
+            connection.query('update git set lastcommit=' + diffrentFromlastCommit + ' where id=' + id, function(err, up) {
+                if (!err) {
+                    console.log('updated');
+                } else {
+                    console.log('Error for update', err);
+                }
+            })
         } else {
             console.log('Error', err);
         }

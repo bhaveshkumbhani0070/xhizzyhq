@@ -16,7 +16,7 @@ console.log('******', host, ' ', user, ' ', password, ' ', database);
 connection.connect(function(err, connection) {
     if (err) {
         console.log('err', err);
-        //connection.release();oken
+        //connection.release()
         // res.json({ "code": 100, "status": "Error in connection database" });
         return;
     }
