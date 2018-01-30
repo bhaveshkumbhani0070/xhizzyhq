@@ -27,7 +27,7 @@ exports.gitcommit = function(req, res) {
 }
 
 cron.schedule('0 */1 * * * *', function() {
-    // start()
+    start()
 });
 
 // start()
