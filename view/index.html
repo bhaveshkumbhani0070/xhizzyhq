@@ -1,19 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="crypto">
 
 <head>
     <title>crypto</title>
+    <link rel="stylesheet" href="npm/bootstrap/dist/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <!-- <script src="npm/bootstrap/dist/js/bootstrap.js"></script> -->
+
+
 </head>
 
-<body>
+<body ng-controller="myCtrl">
     <div>
-        <h1>Welcome</h1>
+        <h1></h1>
     </div>
-    <div ng-app="">
-        <p>Name : <input type="text" ng-model="name"></p>
-        <h1>Hello {{name}}</h1>
-    </div>
+    <!-- code    "ELF"
+    date_added    "2018-01-29T18:30:00.000Z"
+    github    "https://github.com/AElfProject/AElf"
+    github_totalCommits    30
+    reddit    "https://www.reddit.com/r/aelfofficial/"
+    reddit_followers    669
+    twitter    "https://twitter.com/aelfblockchain"
+    twitter_followers    46523
+    
+    discord    "https://discordapp.com/channels/400831895241359370/400852423809302528"
+    discord_followers    null
+    facebook    "https://www.facebook.com/aelfio/"
+    facebook_followers    null
+    slack    ""
+    slack_followers    null
+    telegram    "https://t.me/aelfblockchain"
+    telegram_followers    null -->
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Code</th>
+                <th>date</th>
+                <th>git</th>
+                <th>Total git commits</th>
+                <th>reddit</th>
+                <th>reddit followers</th>
+                <th>twitter</th>
+                <th>twitter followers</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="val in data">
+                <td>{{val.code}}</td>
+                <td>{{val.date_added}}</td>
+                <td>{{val.github}}</td>
+                <td>{{val.github_totalCommits}}</td>
+                <td>{{val.reddit}}</td>
+                <td>{{val.reddit_followers}}</td>
+                <td>{{val.twitter}}</td>
+                <td>{{val.twitter_followers}}</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+<script>
+    var app = angular.module('crypto', []);
+    app.controller('myCtrl', function($scope, $http) {
+        $scope.name = "John";
+        $scope.data = [];
+        $http({
+            method: 'GET',
+            url: '/api/getallData'
+        }).then(function(success) {
+            console.log('data get success', success);
+            $scope.data = success.data.data;
+        }, function(error) {
+            console.log('Error for get data from search');
+        });
+    });
+</script>
 
 </html>

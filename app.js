@@ -19,7 +19,7 @@ app.use(methodOverride());
 // app.use("/fonts", express.static(__dirname + '/app/fonts'));
 // app.use("/images", express.static(__dirname + '/app/images'));
 // app.use("/public", express.static(__dirname + '/public'));
-// app.use("/node_module", express.static(__dirname + '/node_modules'));
+app.use("/npm", express.static(__dirname + '/node_modules'));
 
 require('./app/routes.js')(app);
 

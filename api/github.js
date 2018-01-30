@@ -26,7 +26,7 @@ exports.gitcommit = function(req, res) {
     });
 }
 
-cron.schedule('0 */1 * * * *', function() {
+cron.schedule('0 */5 * * * *', function() {
     start()
 });
 
@@ -176,5 +176,16 @@ function getCommitUpdate(id, repo) {
 
 
 exports.getallData = function(req, res) {
-
+    connection.query('SELECT * FROM coins c left join coin_history h on c.id=h.coin_id',
+        function(err, data) {
+            if (!err) {
+                console.log('data', data);
+                res.json({ code: 200, status: 1, message: 'Data get successfully', data: data });
+                return;
+            } else {
+                console.log('Error', err);
+                res.json({ code: 200, status: 0, message: 'Error for get data' })
+                return;
+            }
+        })
 }
