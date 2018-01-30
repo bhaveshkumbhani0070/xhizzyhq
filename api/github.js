@@ -3,6 +3,9 @@ var github = require('octonode');
 var client = github.client();
 var cron = require('node-cron');
 var connection = require('../config/db.js');
+var request = require('request');
+var cheerio = require('cheerio');
+var Q = require('q');
 
 exports.gitcommit = function(req, res) {
     var ghrepo = client.repo('kumbhanialex111/xhizzyhq');
@@ -24,20 +27,30 @@ exports.gitcommit = function(req, res) {
 }
 
 cron.schedule('0 */1 * * * *', function() {
+    start()
+});
 
+function start() {
     connection.query('select * from coins', function(err, data) {
         if (!err) {
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     console.log('data', data[i])
                     var id = data[i].id;
-                    var link = data[i].github;
-                    link = link.split('/');
-                    var repo = link[link.length - 2] + '/' + link[link.length - 1]
+                    var githubLink = data[i].github;
+                    var twitterLink = data[i].twitter;
+                    var discordLink = data[i].discord;
+                    var facebook = data[i].facebook;
+                    var telegram = data[i].telegram;
+                    var reddit = data[i].reddit;
+
+                    githubLink = githubLink.split('/');
+                    var repo = githubLink[githubLink.length - 2] + '/' + githubLink[githubLink.length - 1]
 
                     connection.query('select * from coin_history where coin_id=' + id, function(err, coinData) {
                         if (!err) {
                             console.log('coinData', coinData);
+
                             if (coinData && coinData.length > 0) {
                                 if (coinData[0].github_totalCommits) {
                                     console.log('Alredy count');
@@ -59,9 +72,16 @@ cron.schedule('0 */1 * * * *', function() {
             console.log('Error', err);
         }
     })
-});
+}
 
-
+function getUrlsUpdate(id, redUrl) {
+    var getLinks = request(redUrl, function(err, res, body) { //async request
+        if (!err && res.statusCode == 200) {
+            var $ = cheerio.load(body);
+            console.log('find', $('.subscribers .number').text());
+        }
+    });
+}
 
 
 function getCommitAdd(id, repo) {
@@ -87,16 +107,6 @@ function getCommitAdd(id, repo) {
                 }
             })
 
-            // var diffrentFromlastCommit = Math.abs(date1 - date2) / (60 * 60 * 1000); //looper.diffBetweenDate(date1);
-            // console.log('data', diffrentFromlastCommit);
-            // date2 = looper.dateFormat(date2)
-            // connection.query('update git set lastcommit="' + diffrentFromlastCommit + '", totalCommit=' + totalCommit + ', lastcommitDate="' + date2 + '" where id=' + id, function(err, up) {
-            //     if (!err) {
-            //         console.log('updated');
-            //     } else {
-            //         console.log('Error for update', err);
-            //     }
-            // })
         } else {
             console.log('Error', err);
         }
@@ -120,17 +130,6 @@ function getCommitUpdate(id, repo) {
                     console.log('Error', err);
                 }
             })
-
-            // var diffrentFromlastCommit = Math.abs(date1 - date2) / (60 * 60 * 1000); //looper.diffBetweenDate(date1);
-            // console.log('data', diffrentFromlastCommit);
-            // date2 = looper.dateFormat(date2)
-            // connection.query('update git set lastcommit="' + diffrentFromlastCommit + '", totalCommit=' + totalCommit + ', lastcommitDate="' + date2 + '" where id=' + id, function(err, up) {
-            //     if (!err) {
-            //         console.log('updated');
-            //     } else {
-            //         console.log('Error for update', err);
-            //     }
-            // })
         } else {
             console.log('Error', err);
         }
