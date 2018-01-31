@@ -53,14 +53,15 @@ function start() {
                             if (coinData.length > 0) {
                                 getCommitUpdate(id, githubLink);
                                 redditUpdate(id, reddit);
-                                twitterUpdate(1, twitterLink);
-
+                                twitterUpdate(id, twitterLink);
+                                telegramUpdate(id, telegram);
                             } else {
                                 connection.query("insert into coin_history(coin_id,date_time) values(" + id + ",'" + looper.dateFormat(new Date()) + "')", function(err, added) {
                                     if (!err) {
                                         getCommitUpdate(id, githubLink);
                                         redditUpdate(id, reddit);
-                                        twitterUpdate(1, twitterLink);
+                                        twitterUpdate(id, twitterLink);
+                                        telegramUpdate(id, telegram);
                                     } else {
                                         console.log('Error for adding new history', err)
                                     }
@@ -121,6 +122,23 @@ function twitterUpdate(id, redUrl) {
     });
 }
 
+function telegramUpdate(id, redUrl) {
+    var getLinks = request(redUrl, function(err, res, body) { //async request
+        if (!err && res.statusCode == 200) {
+            var $ = cheerio.load(body);
+            var followes = $('.tgme_page_extra').text();
+            followes = parseInt(followes.replace(/\s/g, ''));
+
+            connection.query('update coin_history set telegram_followers=' + followes + ' where coin_id=' + id, function(err, insData) {
+                if (!err) {
+                    console.log('Update telegram');
+                } else {
+                    console.log('Error', err);
+                }
+            })
+        }
+    });
+}
 // facebookUpdate(1, "https://www.facebook.com/aelfio/");
 
 function facebookUpdate(id, link) {}
