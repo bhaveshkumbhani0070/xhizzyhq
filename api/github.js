@@ -235,7 +235,7 @@ exports.getallData = function(req, res) {
                 var github_totalCommits = getPersontage(data[0].github_totalCommits, data[1].github_totalCommits);
                 var reddit_followers = getPersontage(data[0].reddit_followers, data[1].reddit_followers);
                 var telegram_followers = getPersontage(data[0].telegram_followers, data[1].telegram_followers);
-                var allData = {
+                var allData = [{
                     id: data[0].id,
                     code: data[0].code,
                     date_added: data[0].date_added,
@@ -255,7 +255,7 @@ exports.getallData = function(req, res) {
                     slack_followers: data[0].slack_followers,
                     reddit_followers: reddit_followers,
                     telegram_followers: telegram_followers
-                }
+                }]
                 res.json({ code: 200, status: 1, message: 'Data get successfully', data: allData });
                 return;
             } else {
