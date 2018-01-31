@@ -26,7 +26,7 @@ exports.gitcommit = function(req, res) {
 }
 
 cron.schedule('0 */15 * * * *', function() {
-    start()
+    // start()
 });
 
 
@@ -238,27 +238,30 @@ exports.getallData = function(req, res) {
                 var allData = [{
                     id: data[1].id,
                     code: data[1].code,
-                    date_added: data[1].date_added,
-                    twitter: data[1].twitter,
-                    discord: data[1].discord,
-                    github: data[1].github,
-                    facebook: data[1].facebook,
-                    telegram: data[1].telegram,
-                    reddit: data[1].reddit,
-                    slack: data[1].slack,
                     coin_id: data[1].coin_id,
                     date_time: data[1].date_time,
-                    twitter_followersPer: twitter_followers,
-                    twitter_followers: data[1].twitter_followers,
-                    discord_followers: data[1].discord_followers,
+                    github: data[1].github,
                     github_totalCommitsPer: github_totalCommits,
                     github_totalCommits: data[1].github_totalCommits,
-                    facebook_followers: data[1].facebook_followers,
-                    slack_followers: data[1].slack_followers,
+                    reddit: data[1].reddit,
                     reddit_followersPer: reddit_followers,
                     reddit_followers: data[1].reddit_followers,
+                    twitter: data[1].twitter,
+                    twitter_followersPer: twitter_followers,
+                    twitter_followers: data[1].twitter_followers,
+                    telegram: data[1].telegram,
                     telegram_followersPer: telegram_followers,
-                    telegram_followers: data[1].telegram_followers
+                    telegram_followers: data[1].telegram_followers,
+                    facebook: data[1].facebook,
+                    facebook_followers: data[1].facebook_followers,
+                    facebook_followersPer: 0,
+                    slack: data[1].slack,
+                    slack_followers: data[1].slack_followers,
+                    slack_followersPer: 0,
+                    discord: data[1].discord,
+                    discord_followers: data[1].discord_followers,
+                    discord_followersPer: 0,
+                    date_added: data[1].date_added
                 }]
                 res.json({ code: 200, status: 1, message: 'Data get successfully', data: allData });
                 return;
