@@ -248,13 +248,17 @@ exports.getallData = function(req, res) {
                     slack: data[1].slack,
                     coin_id: data[1].coin_id,
                     date_time: data[1].date_time,
-                    twitter_followers: twitter_followers,
+                    twitter_followersPer: twitter_followers,
+                    twitter_followers: data[1].twitter_followers,
                     discord_followers: data[1].discord_followers,
-                    github_totalCommits: github_totalCommits,
+                    github_totalCommitsPer: github_totalCommits,
+                    github_totalCommits: data[1].github_totalCommits,
                     facebook_followers: data[1].facebook_followers,
                     slack_followers: data[1].slack_followers,
-                    reddit_followers: reddit_followers,
-                    telegram_followers: telegram_followers
+                    reddit_followersPer: reddit_followers,
+                    reddit_followers: data[1].reddit_followers,
+                    telegram_followersPer: telegram_followers,
+                    telegram_followers: data[1].telegram_followers
                 }]
                 res.json({ code: 200, status: 1, message: 'Data get successfully', data: allData });
                 return;
