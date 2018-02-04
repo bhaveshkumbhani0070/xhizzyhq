@@ -16,7 +16,5 @@ exports.discord = function(req, res) {
         }
     });
     discord.login(token);
-
-
     // console.log(message.mentions.members.first())
 }
