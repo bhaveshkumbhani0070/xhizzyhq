@@ -41,9 +41,9 @@ function start() {
                             getAllData(allLink, function(all) {
                                 if (all) {
                                     console.log('all', all);
-                                    connection.query("insert into coin_history(coin_id,date_time,twitter_followers,github_totalCommits,reddit_followers,telegram_followers,facebook_followers) values(" +
+                                    connection.query("insert into coin_history(coin_id,date_time,twitter_followers,github_totalCommits,reddit_followers,telegram_followers,facebook_followers,discord_followers) values(" +
                                         id + ",'" + looper.dateFormat(new Date()) + "', " + all[1].twitterLink + "," +
-                                        all[3].githubLink + "," + all[0].reddit + "," + all[2].telegram + "," + all[4].facebook_followers + ")",
+                                        all[3].githubLink + "," + all[0].reddit + "," + all[2].telegram + "," + all[4].facebook_followers + "," + all[5].discord_followers + " )",
                                         function(err, added) {
                                             if (!err) {
                                                 console.log('added new');
@@ -69,6 +69,7 @@ function start() {
     })
 }
 
+
 function getAllData(allLink, callback) {
     var resdata = [];
     redditUpdate(allLink.reddit, function(reddit) {
@@ -83,8 +84,13 @@ function getAllData(allLink, callback) {
                         function(fbData) {
                             if (fbData) {
                                 resdata.push({ "facebook_followers": fbData });
-                                console.log('resdata', resdata);
-                                callback(resdata);
+                                discordUser(function(disc) {
+                                    if (disc) {
+                                        resdata.push({ "discord_followers": disc });
+                                        console.log('resdata', resdata);
+                                        callback(resdata);
+                                    }
+                                })
                             } else {
                                 resdata.push({ "facebook_followers": 0 });
                                 console.log('resdata', resdata);
@@ -96,6 +102,24 @@ function getAllData(allLink, callback) {
         })
     })
 
+}
+
+function discordUser(callback) {
+
+    const token = "NDA5OTIyNTcyMTEzOTM2Mzg1.DVlp6g.oMcAC91xu4b68EQ06WsfcdFldBg"
+    const Discord = require('discord.js');
+    const discord = new Discord.Client();
+
+    discord.on('ready', () => {
+        var allUser = 0;
+        for (user of discord.users) {
+            allUser = allUser + 1;
+            console.log(); //user[1].username
+        }
+        callback(allUser)
+        console.log('allUser', allUser);
+    });
+    discord.login(token);
 }
 
 function redditUpdate(redUrl, callback) {
