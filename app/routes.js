@@ -5,4 +5,5 @@ module.exports = function(app) {
         res.sendFile('index.html', { 'root': "view" });
     });
     app.get('/api/social', social.gitcommit);
+    app.get('/api/getallData', social.getallData);
 }

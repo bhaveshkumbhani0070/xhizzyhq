@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="npm/bootstrap/dist/css/bootstrap.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <!-- <script src="npm/bootstrap/dist/js/bootstrap.js"></script> -->
-
-
 </head>
 
 <body ng-controller="myCtrl">
@@ -22,7 +20,6 @@
     reddit_followers    669
     twitter    "https://twitter.com/aelfblockchain"
     twitter_followers    46523
-    
     discord    "https://discordapp.com/channels/400831895241359370/400852423809302528"
     discord_followers    null
     facebook    "https://www.facebook.com/aelfio/"
@@ -31,6 +28,7 @@
     slack_followers    null
     telegram    "https://t.me/aelfblockchain"
     telegram_followers    null -->
+
     <table class="table table-hover">
         <thead>
             <tr>
@@ -57,19 +55,19 @@
                 <td>{{val.code}}</td>
                 <td>{{val.date_time | date:'dd/MM/yyyy hh:mm:ss'}}</td>
                 <td><a href="{{val.github}}" target="_blank">{{val.github}}</a></td>
-                <td>{{val.github_totalCommits}} change {{val.github_totalCommitsPer}}%</td>
+                <td>{{val.github_totalCommits}} (change {{val.github_totalCommitsPer}}%)</td>
                 <td><a href="{{val.reddit}}" target="_blank">{{val.reddit}}</a></td>
-                <td>{{val.reddit_followers}} change {{val.reddit_followersPer}}%</td>
+                <td>{{val.reddit_followers}} (change {{val.reddit_followersPer}}%)</td>
                 <td><a href="{{val.twitter}}" target="_blank">{{val.twitter}}</a></td>
-                <td>{{val.twitter_followers}} change {{val.twitter_followersPer}}%</td>
+                <td>{{val.twitter_followers}} (change {{val.twitter_followersPer}}%)</td>
                 <td><a href="{{val.telegram}}" target="_blank">{{val.telegram}}</a></td>
-                <td>{{val.telegram_followers}} change {{val.telegram_followersPer}}%</td>
+                <td>{{val.telegram_followers}} (change {{val.telegram_followersPer}}%)</td>
                 <td><a href="{{val.facebook}}" target="_blank">{{val.facebook}}</a></td>
-                <td>{{val.facebook_followers}} change {{val.facebook_followersPer}}%</td>
+                <td>{{val.facebook_followers}} (change {{val.facebook_followersPer}}%)</td>
                 <td><a href="{{val.slack}}" target="_blank">{{val.slack}}</a></td>
-                <td>{{val.slack_followers}} change {{val.slack_followersPer}}%</td>
+                <td>{{val.slack_followers}} (change {{val.slack_followersPer}}%)</td>
                 <td><a href="{{val.discord}}" target="_blank">{{val.discord}}</a></td>
-                <td>{{val.discord_followers}} change {{val.discord_followersPer}}%</td>
+                <td>{{val.discord_followers}} (change {{val.discord_followersPer}}%)</td>
             </tr>
         </tbody>
     </table>

@@ -117,7 +117,7 @@ function discordUser(callback) {
             console.log(user[1].username); //user[1].username
         }
         callback(allUser)
-        console.log('allUser', allUser);
+        //console.log('allUser', allUser);
     });
     discord.login(token);
 }
