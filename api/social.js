@@ -114,7 +114,7 @@ function discordUser(callback) {
         var allUser = 0;
         for (user of discord.users) {
             allUser = allUser + 1;
-            console.log(); //user[1].username
+            console.log(user[1].username); //user[1].username
         }
         callback(allUser)
         console.log('allUser', allUser);
@@ -122,15 +122,6 @@ function discordUser(callback) {
     discord.login(token);
 }
 
-function redditUpdate(redUrl, callback) {
-    var getLinks = request(redUrl, function(err, res, body) { //async request
-        if (!err && res.statusCode == 200) {
-            var $ = cheerio.load(body);
-            var followes = $('.subscribers .number').text();
-            callback(followes);
-        }
-    });
-}
 
 
 function twitterUpdate(redUrl, callback) {
